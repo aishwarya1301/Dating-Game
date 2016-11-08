@@ -5,7 +5,7 @@ from base import error_print, info_print, move_print, warn_print
 import numpy as np
 from .utils import binary_candidate_score_to_msg
 
-x = 0
+
 def sample_candidate(weights):
     """Sample a candidate such that their score is not 1. Otherwise we would
     have solved the problem for the matchmaker.
@@ -71,10 +71,7 @@ class MatchMaker(object):
             self.loose()
 
     def recv_weights(self):
-        global x
-        print(x)
         info_print('Reading weights from M')
-        x += 1
         # 7 chars for each weight, commas and one ! mark
         weight_string = self.data_sock.recv(7*self.num_attr +
                                             self.num_attr)

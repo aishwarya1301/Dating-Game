@@ -10,7 +10,7 @@ PORT = int(sys.argv[1])
 def get_valid_prob(n):
     alpha = np.random.random(n)
     p = np.random.dirichlet(alpha)
-    p = np.round(p, 2)
+    p = np.trunc(p*100)/100.0
 
     # ensure p sums to 1 after rounding
     p[-1] = 1 - np.sum(p[:-1])
