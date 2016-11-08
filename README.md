@@ -51,6 +51,9 @@ the end of the message. For example, for `n=5`.
 You can use the `dating/utils.py:floats_to_msg2` function to do so.
 3. Subsequently the Person will receive 20 guesses made by Matchmaker over time, each of which will contain `8n` characters.
 Each component will have a +/- sign, followed by one digit before the decimal and 4 digits after the decimal. For example
+
   ```
   +0.2303,+0.8095,+0.1366,+0.9295,+0.4915!
   ```
+4. For each of the 20 candidate proposed by the matchmaker, the person has to reply with modified weights with 20% of the
+original weights from step 2. Once again, the weights should be communicated by exactly `6n` characters.
