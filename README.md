@@ -9,23 +9,23 @@ python architect.py <PORT-NO>
 Change the variable `ATTRIBUTES` to inside `architect.py` file to change the number of attributes each candidate can have.
 The test scripts can be executed by
 ```shell
-python person.py <PORT-NO>
-python matchmaker.py <PORT-NO>
+python test_person.py <PORT-NO>
+python test_matchmaker.py <PORT-NO>
 ```
 
 # Sequence of actions
-1. The architect communicates the number of attributs (n) to Person (P) via socket.
-2. P responds with a vector w, of length n whose positive components sum to 1 and negative components sum to -1 and sends it to
-the architect who verifies it.
-3. The architect communicates n via socket to Matchmacker (M).
-4. The architect computes the dot product of the s_i = (w.x_i) for 1 <= i <= 20 where x_i is a binary random vector.
-He sends all 20 s_i and x_i to M.
+1. The architect communicates the number of attributs (`n`) to Person (P) via socket.
+2. P responds with a vector `w`, of length `n` whose positive components sum to `1` and negative components sum to `-1` and 
+sends it to the architect who verifies it.
+3. The architect communicates `n` via socket to Matchmacker (M).
+4. The architect computes the dot product of the `s_i = (w.x_i)` for `1 <= i <= 20` where `x_i` is a binary random
+vector. He sends all 20 `s_i` and `x_i` to M.
 5. For 20 turns
-  1. M guesses some x, such that all components of x are between 0 and 1.
-  2. Architect computes s = w.x, and stores s. It then sends x to P.
-  3. P modifies w, while not deviating more than 20% from the initial value of w.
-  4. Architech sends s to M and requests for  a new x.
-The architect records the best score s, and if it was ever 1, it records the number of turns taken.
+  1. M guesses some `x`, such that all components of `x` are between `0` and `1`.
+  2. Architect computes `s = w.x`, and stores `s`. It then sends `x` to P.
+  3. P modifies `w`, while not deviating more than 20% from the initial value of `w`.
+  4. Architech sends `s` to M and requests for a new `x`.
+The architect records the best score `s`, and if it was ever 1, it records the number of turns taken.
 
 
 # Communication
