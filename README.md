@@ -36,20 +36,21 @@ and `!` to denote end of a message.
 ## Person (P)
 1. At the start recevies exactly 4 characters. The last character is `!` and the first 3 characters are digits which denote
 `n`, the number of attributes.  For example
-```
-056!
-```
+
+  ```
+  056!
+  ```
+
 2. The architect then expects a response containing exactly, `6n` characters, denoting the initial set of weights. Each
 component of the weight vector should contain, a +/- sign, followed by one digit before the decimal and 2 digits after 
 the decimal. If you are not using any digits, you should set them to `0`. Components are seperated by, `,` and `!` denotes
 the end of the message. For example, for `n=5`.
-```
-'+0.20,+0.80,-0.68,-0.00,-0.32!
-```
+  ```
+  '+0.20,+0.80,-0.68,-0.00,-0.32!
+  ```
 You can use the `dating/utils.py:floats_to_msg2` function to do so.
-
 3. Subsequently the Person will receive 20 guesses made by Matchmaker over time, each of which will contain `8n` characters.
 Each component will have a +/- sign, followed by one digit before the decimal and 4 digits after the decimal. For example
-```
-+0.2303,+0.8095,+0.1366,+0.9295,+0.4915!
-```
+  ```
+  +0.2303,+0.8095,+0.1366,+0.9295,+0.4915!
+  ```
