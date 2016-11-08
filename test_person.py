@@ -1,6 +1,7 @@
 import socket
 import sys
 import numpy as np
+from dating.utils import floats_to_msg2, candidate_to_msg
 
 
 PORT = int(sys.argv[1])
@@ -25,26 +26,6 @@ def get_valid_weights(n):
     return np.around(a, 2)
 
 
-def floats_to_msg(arr):
-    'Convert float array to proper msg format'
-
-    strings = []
-    for a in arr:
-        strings.append('%+01.2f' % a)
-    msg = ','.join(strings) + '!'
-    return msg
-
-
-def candidate_to_msg(arr):
-    'Convert a candidate to proper msg format'
-
-    strings = []
-    for a in arr:
-        strings.append('%d' % a)
-    msg = ','.join(strings) + '!'
-    return msg
-
-
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect(('localhost', PORT))
 
@@ -56,11 +37,16 @@ initial_weights = get_valid_weights(num_attr)
 ideal_candidate = initial_weights > 0
 anti_ideal_candidate = initial_weights <= 0
 
-sock.sendall(floats_to_msg(initial_weights))
+sock.sendall(floats_to_msg2(initial_weights))
 
 sock.sendall(candidate_to_msg(ideal_candidate))
 sock.sendall(candidate_to_msg(anti_ideal_candidate))
-#data = sock.recv(1024)
+
+for i in range(20):
+    # 7 char weights + commas + exclamation
+    data = sock.recv(8*num_attr)
+    print('%d: Received guess = %r' % (i, data))
+    assert data[-1] == '!'
+    sock.send(floats_to_msg2(initial_weights))
 
 sock.close()
-

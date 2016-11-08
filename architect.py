@@ -1,26 +1,32 @@
-from dating import Person
+from dating import Person, MatchMaker
 import sys
 import numpy as np
+import socket
 
 
-ATTRIBUTES = 5
+ATTRIBUTES = 10
 port = int(sys.argv[1])
 
-
-def sample_candidate(weights):
-    """Sample a candidate such that their score is not 1. Otherwise we would
-    have solved the problem for the matchmaker.
-    """
-
-    n = len(weights)
-    candidate = np.random.randint(0, 2, size=n)
-    while weights*candidate == 1:
-        candidate = np.random.randint(0, 2, size=n)
-
-    return candidate
+connect_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#connect_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+connect_sock.bind(('localhost', port))
+connect_sock.listen(2)
 
 best_score = -np.inf
-person = Person(ATTRIBUTES, port)
+person = Person(ATTRIBUTES, connect_sock)
 
-for i in range(20):
-    candidate = sample_candidate(
+# Matchmaker is given training data and one guess is taken.
+matchmaker = MatchMaker(ATTRIBUTES, person.weights, connect_sock)
+person.send_guess_and_get_update(matchmaker.weight_guess)
+score = np.dot(matchmaker.weight_guess, person.weights)
+
+for i in range(19):
+
+    if np.isclose(score, 1):
+        matchmaker.win()
+
+    person.send_guess_and_get_update(matchmaker.weight_guess)
+    score = np.dot(matchmaker.weight_guess, person.weights)
+    matchmaker.send_score_and_get_candidate(score)
+
+matchmaker.send_score(score)

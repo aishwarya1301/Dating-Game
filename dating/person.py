@@ -1,28 +1,27 @@
 from __future__ import print_function
-import socket
 import time
 from base import error_print, info_print, move_print, warn_print
 import numpy as np
-
-
-MAX_RECV = 4096
+from .utils import floats_to_msg4
 
 
 class Person(object):
-    def __init__(self, num_attr, port):
+    def __init__(self, num_attr, connect_sock):
         """ Initilize Person (P).
 
         num_attr - The number of attributes of candidates.
         port - port on which to accept connections.
+        connect_sock - socket used for incoming connections.
         """
 
         self.time_taken = 0
         self.num_attr = num_attr
-        self.connect_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connect_sock.bind(('localhost', port))
-        self.connect_sock.listen(1)
 
-        info_print('Waiting for Person (P) to connect on port %d' % port)
+        self.connect_sock = connect_sock
+
+        info_print('Waiting for Person (P) to connect')
+        #self.connect_sock.listen(1)
+
         self.data_sock, _ = self.connect_sock.accept()
 
         info_print('Sent number of attributes to P')
@@ -159,6 +158,27 @@ class Person(object):
             self.loose()
 
         return np.array(candidate)
+
+    def send_guess_and_get_update(self, weight_guess):
+        info_print('Sending Ms guess to P')
+        self.data_sock.send(floats_to_msg4(weight_guess))
+
+        # Latest guess is sent. Time the Person to update weights
+        start_time = time.time()
+        weights = self.recv_weights()
+        t = time.time()
+        self.time_taken += t - start_time
+
+        delta_wegiths = weights - self.initial_weights
+        percent_change = np.abs(delta_wegiths/self.initial_weights)
+
+        if np.any(percent_change > 0.2):
+            self.error('Perecentage change cannot be more than 20%')
+            self.loose()
+
+        self.weights = weights
+        move_print('P updated weights to %r' % self.weights)
+        self.report_time()
 
     def loose(self):
         error_print('P looses due to their mistake')
