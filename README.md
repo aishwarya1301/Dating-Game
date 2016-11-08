@@ -46,7 +46,7 @@ component of the weight vector should contain, a +/- sign, followed by one digit
 the decimal. If you are not using any digits, you should set them to `0`. Components are seperated by, `,` and `!` denotes
 the end of the message. For example, for `n=5`.
   ```
-  '+0.20,+0.80,-0.68,-0.00,-0.32!
+  +0.20,+0.80,-0.68,-0.00,-0.32!
   ```
 You can use the `dating/utils.py:floats_to_msg2` function to do so.
 3. Subsequently the Person will receive 20 guesses made by Matchmaker over time, each of which will contain `8n` characters.
