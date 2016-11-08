@@ -57,3 +57,22 @@ Each component will have a +/- sign, followed by one digit before the decimal an
   ```
 4. For each of the 20 candidate proposed by the matchmaker, the person has to reply with modified weights with 20% of the
 original weights from step 2. Once again, the weights should be communicated by exactly `6n` characters.
+
+## Matchmaker (M)
+1. Same as person, receives n, via exactly 4 characters.
+2. Immediately after that, M receives 20 binary vectors along with their scores. Each (score, vector) tuple is exactly
+(2n + 8) characters long. There first 87 characters are the score, followed by a `:`, followed by a comma separated binary vector. For example
+
+  ```
+  +0.9900:1,1,0,0,1!
+  ```
+3. M is expected to give an estimate of weights during each of the 20 iterations. The architect expects a message of exactly
+`8n` characters, where each component containt one digit before the decimal and 4 digits after the decimal. For example
+  ```
+  +0.3038,+0.1525,+0.9334,+0.6368,+0.4921!
+  ```
+  See function `dating/utils.py:floats_to_msg4`
+4. After sending an estimate, M will receive a score, of exactly 8 characters. For example
+  ```
+  +0.1356!
+  ```
