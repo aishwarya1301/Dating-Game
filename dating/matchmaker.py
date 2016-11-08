@@ -1,5 +1,4 @@
 from __future__ import print_function
-import socket
 import time
 from base import error_print, info_print, move_print, warn_print
 import numpy as np

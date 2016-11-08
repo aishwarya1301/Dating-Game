@@ -26,4 +26,3 @@ def move_print(msg):
 
 def warn_print(msg):
     print(bcolors.WARNING + msg + bcolors.ENDC)
-

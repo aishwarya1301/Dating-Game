@@ -9,7 +9,6 @@ ATTRIBUTES = 10
 port = int(sys.argv[1])
 
 connect_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#connect_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 connect_sock.bind(('localhost', port))
 connect_sock.listen(2)
 
@@ -26,7 +25,6 @@ for i in range(19):
     if np.isclose(score, 1):
         move_print('M won at round %d' % i)
         matchmaker.win()
-
 
     person.send_guess_and_get_update(matchmaker.weight_guess)
     score = np.dot(matchmaker.weight_guess, person.weights)

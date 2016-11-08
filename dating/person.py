@@ -20,7 +20,6 @@ class Person(object):
         self.connect_sock = connect_sock
 
         info_print('Waiting for Person (P) to connect')
-        #self.connect_sock.listen(1)
 
         self.data_sock, _ = self.connect_sock.accept()
 
