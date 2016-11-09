@@ -30,7 +30,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect(('localhost', PORT))
 
 num_string = sock.recv(4)
-assert num_string.endswith('!')
+assert num_string.endswith('\n')
 
 num_attr = int(num_string[:-1])
 initial_weights = get_valid_weights(num_attr)
@@ -46,7 +46,7 @@ for i in range(20):
     # 7 char weights + commas + exclamation
     data = sock.recv(8*num_attr)
     print('%d: Received guess = %r' % (i, data))
-    assert data[-1] == '!'
+    assert data[-1] == '\n'
     sock.send(floats_to_msg2(initial_weights))
 
 sock.close()

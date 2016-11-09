@@ -31,29 +31,29 @@ The architect records the best score `s`, and if it was ever 1, it records the n
 # Communication
 TCP/IP communication is not guaranteed to be atomic. To resolve this issue we have fixed the message length of every message
 over the socket, so that every `read` call is guaranteed to contain the entire message sent. We use `,` to seperate values
-and `!` to denote end of a message.
+and `\n` to denote end of a message.
 
 ## Person (P)
-1. At the start recevies exactly 4 characters. The last character is `!` and the first 3 characters are digits which denote
+1. At the start recevies exactly 4 characters. The last character is `\n` and the first 3 characters are digits which denote
 `n`, the number of attributes.  For example
 
   ```
-  056!
+  056\n
   ```
 
 2. The architect then expects a response containing exactly, `6n` characters, denoting the initial set of weights. Each
 component of the weight vector should contain, a +/- sign, followed by one digit before the decimal and 2 digits after 
-the decimal. If you are not using any digits, you should set them to `0`. Components are seperated by, `,` and `!` denotes
+the decimal. If you are not using any digits, you should set them to `0`. Components are seperated by, `,` and `\n` denotes
 the end of the message. For example, for `n=5`.
   ```
-  +0.20,+0.80,-0.68,-0.00,-0.32!
+  +0.20,+0.80,-0.68,-0.00,-0.32\n
   ```
 You can use the `dating/utils.py:floats_to_msg2` function to do so.
 3. Subsequently the Person will receive 20 guesses made by Matchmaker over time, each of which will contain `8n` characters.
 Each component will have a +/- sign, followed by one digit before the decimal and 4 digits after the decimal. For example
 
   ```
-  +0.2303,+0.8095,+0.1366,+0.9295,+0.4915!
+  +0.2303,+0.8095,+0.1366,+0.9295,+0.4915\n
   ```
 4. For each of the 20 candidate proposed by the matchmaker, the person has to reply with modified weights with 20% of the
 original weights from step 2. Once again, the weights should be communicated by exactly `6n` characters.
@@ -64,15 +64,15 @@ original weights from step 2. Once again, the weights should be communicated by 
 (2n + 8) characters long. There first 87 characters are the score, followed by a `:`, followed by a comma separated binary vector. For example
 
   ```
-  +0.9900:1,1,0,0,1!
+  +0.9900:1,1,0,0,1\n
   ```
 3. M is expected to give an estimate of weights during each of the 20 iterations. The architect expects a message of exactly
 `8n` characters, where each component containt one digit before the decimal and 4 digits after the decimal. For example
   ```
-  +0.3038,+0.1525,+0.9334,+0.6368,+0.4921!
+  +0.3038,+0.1525,+0.9334,+0.6368,+0.4921\n
   ```
   See function `dating/utils.py:floats_to_msg4`
 4. After sending an estimate, M will receive a score, of exactly 8 characters. For example
   ```
-  +0.1356!
+  +0.1356\n
   ```

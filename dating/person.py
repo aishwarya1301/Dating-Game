@@ -24,7 +24,7 @@ class Person(object):
         self.data_sock, _ = self.connect_sock.accept()
 
         info_print('Sent number of attributes to P')
-        self.data_sock.sendall('%03d!' % num_attr)
+        self.data_sock.sendall('%03d\n' % num_attr)
 
         # Sent the msg to Person, start clocking them.
         start_time = time.time()
@@ -68,13 +68,13 @@ class Person(object):
     def recv_weights(self):
 
         info_print('Reading weights from P')
-        # 5 chars for each weight, commas and one ! mark
+        # 5 chars for each weight, commas and one \n
         weight_string = self.data_sock.recv(5*self.num_attr +
                                             self.num_attr)
         info_print('Weights recieved are: %r' % weight_string)
 
-        if not weight_string.endswith('!'):
-            error_print("Weights sent by P not truncated by '!'")
+        if not weight_string.endswith('\n'):
+            error_print("Weights sent by P not truncated by '\\n'")
             self.loose()
 
         weight_string = weight_string[:-1]
@@ -123,12 +123,12 @@ class Person(object):
     def recv_candidate(self):
 
         info_print('Reading candidate from P')
-        # 1 char per attribute, commas and !
+        # 1 char per attribute, commas and \n
         cand_string = self.data_sock.recv(2*self.num_attr)
         info_print('Candidate received is: %r' % cand_string)
 
-        if not cand_string.endswith('!'):
-            error_print("Weights sent by P not truncated by '!'")
+        if not cand_string.endswith('\n'):
+            error_print("Weights sent by P not truncated by '\\n'")
             self.loose()
 
         cand_string = cand_string[:-1]

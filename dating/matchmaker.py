@@ -40,7 +40,7 @@ class MatchMaker(object):
         self.data_sock, _ = self.connect_sock.accept()
 
         info_print('Sent number of attributes to M')
-        self.data_sock.sendall('%03d!' % num_attr)
+        self.data_sock.sendall('%03d\n' % num_attr)
 
         # Msg sent to M, start clocking them
         start_time = time.time()
@@ -71,13 +71,13 @@ class MatchMaker(object):
 
     def recv_weights(self):
         info_print('Reading weights from M')
-        # 7 chars for each weight, commas and one ! mark
+        # 7 chars for each weight, commas and one \n mark
         weight_string = self.data_sock.recv(7*self.num_attr +
                                             self.num_attr)
         info_print('Weights recieved are: %r' % weight_string)
 
-        if not weight_string.endswith('!'):
-            error_print("Weights sent by M not truncated by '!'")
+        if not weight_string.endswith('\n'):
+            error_print("Weights sent by M not truncated by '\\n'")
             self.loose()
 
         weight_string = weight_string[:-1]
@@ -114,11 +114,11 @@ class MatchMaker(object):
         return np.array(weights)
 
     def send_score(self, score):
-        msg = '%+1.4f!' % score
+        msg = '%+1.4f\n' % score
         self.data_sock.sendall(msg)
 
     def send_score_and_get_candidate(self, score):
-        msg = '%+1.4f!' % score
+        msg = '%+1.4f\n' % score
         self.data_sock.sendall(msg)
         move_print('Mathmacker got score %f' % score)
         start_time = time.time()

@@ -7,7 +7,7 @@ def binary_candidate_score_to_msg(score, candidate):
     for attr in candidate:
         strings += '%1d' % attr
 
-    msg += ','.join(strings) + '!'
+    msg += ','.join(strings) + '\n'
     return msg
 
 
@@ -17,7 +17,7 @@ def floats_to_msg4(arr):
     strings = []
     for a in arr:
         strings.append('%+01.4f' % a)
-    msg = ','.join(strings) + '!'
+    msg = ','.join(strings) + '\n'
     return msg
 
 
@@ -27,7 +27,7 @@ def floats_to_msg2(arr):
     strings = []
     for a in arr:
         strings.append('%+01.2f' % a)
-    msg = ','.join(strings) + '!'
+    msg = ','.join(strings) + '\n'
     return msg
 
 
@@ -37,5 +37,5 @@ def candidate_to_msg(arr):
     strings = []
     for a in arr:
         strings.append('%d' % a)
-    msg = ','.join(strings) + '!'
+    msg = ','.join(strings) + '\n'
     return msg
