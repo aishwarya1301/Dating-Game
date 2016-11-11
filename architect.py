@@ -31,6 +31,7 @@ for i in range(19):
     best_score = max(best_score, score)
     matchmaker.send_score_and_get_candidate(score)
 
+score = np.dot(matchmaker.weight_guess, person.weights)
 matchmaker.send_score(score)
 best_score = max(best_score, score)
 
