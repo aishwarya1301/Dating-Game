@@ -44,7 +44,7 @@ and `\n` to denote end of a message.
 
 2. The architect then expects a response containing exactly, `6n` characters, denoting the initial set of weights. Each
 component of the weight vector should contain, a +/- sign, followed by one digit before the decimal and 2 digits after 
-the decimal. If you are not using any digits, you should set them to `0`. Components are separated by, `,` and `\n` denotes
+the decimal. If you are not using any digits, you should set them to `0`. Components are separated by `,` and `\n` denotes
 the end of the message. For example, for `n=5`.
 
   ```
@@ -52,7 +52,7 @@ the end of the message. For example, for `n=5`.
   ```
 You can use the `dating/utils.py:floats_to_msg2` function to do so.
 3. The atchitech then expects the ideal and anti-ideal candidates, with the ideal candidate expected first. Each candidate
-is exactly `2n` characters like of binary digits. For example
+is exactly `2n` characters of binary digits. For example
 
   ```
   0,1,1,0,0\n
