@@ -54,13 +54,13 @@ You can use the `dating/utils.py:floats_to_msg2` function to do so.
 3. The atchitech then expects the ideal and anti-ideal candidates, with the ideal candidate expected first. Each candidate
 is exactly `2n` characters like of binary digits. For example
 
-```
+  ```
   0,1,1,0,0\n
   ```
 4. Subsequently the Person will receive 20 guesses made by Matchmaker over time, each of which will contain `8n` characters.
 Each component will have a +/- sign, followed by one digit before the decimal and 4 digits after the decimal. For example
 
-```
+  ```
   +0.2303,+0.8095,+0.1366,+0.9295,+0.4915\n
   ```
 5. For each of the 20 candidate proposed by the matchmaker, the person has to reply with modified weights with 20% of the
@@ -77,12 +77,12 @@ original weights from step 2 and only 5% of them changed. Once again, the weight
 3. M is expected to give an estimate of weights during each of the 20 iterations. The architect expects a message of exactly
 `8n` characters, where each component contains one digit before the decimal and 4 digits after the decimal. For example
 
-```
+  ```
   +0.3038,+0.1525,+0.9334,+0.6368,+0.4921\n
   ```
   See function `dating/utils.py:floats_to_msg4`
 4. After sending an estimate, M will receive a score, of exactly 8 characters. For example
 
-```
+  ```
   +0.1356\n
   ```
