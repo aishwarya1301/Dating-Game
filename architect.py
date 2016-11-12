@@ -21,18 +21,18 @@ person.send_guess_and_get_update(matchmaker.weight_guess)
 score = np.dot(matchmaker.weight_guess, person.weights)
 
 for i in range(19):
-
-    if np.isclose(score, 1):
-        move_print('M won at round %d' % i)
-        matchmaker.win()
-
     person.send_guess_and_get_update(matchmaker.weight_guess)
     score = np.dot(matchmaker.weight_guess, person.weights)
     best_score = max(best_score, score)
-    matchmaker.send_score_and_get_candidate(score)
+    if np.isclose(score, 1):
+        matchmaker.send_score(score)
+        move_print('M won at round %d' % i)
+        matchmaker.win()
+    else:
+        matchmaker.send_score_and_get_candidate(score)
 
 score = np.dot(matchmaker.weight_guess, person.weights)
-matchmaker.send_score(score)
 best_score = max(best_score, score)
+matchmaker.send_score(score)
 
 move_print('Matchmacker score = %f' % best_score)
