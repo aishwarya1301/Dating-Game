@@ -1,6 +1,6 @@
 from __future__ import print_function
 import time
-from base import error_print, info_print, move_print, warn_print
+from .base import error_print, info_print, move_print, warn_print
 import numpy as np
 from .utils import floats_to_msg4
 
@@ -172,7 +172,13 @@ class Person(object):
         percent_change = np.abs(delta_wegiths/self.initial_weights)
 
         if np.any(percent_change > 0.2):
-            self.error('Perecentage change cannot be more than 20%')
+            error_print('Perecentage change cannot be more than 20%')
+            self.loose()
+
+        changed = ~np.isclose(delta_wegiths, 0)
+        print(changed)
+        if np.count_nonzero(changed) > 0.05*self.num_attr:
+            error_print('Only 5% of the weights can be changed.')
             self.loose()
 
         self.weights = weights
