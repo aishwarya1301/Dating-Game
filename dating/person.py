@@ -176,7 +176,6 @@ class Person(object):
             self.loose()
 
         changed = ~np.isclose(delta_wegiths, 0)
-        print(changed)
         if np.count_nonzero(changed) > 0.05*self.num_attr:
             error_print('Only 5% of the weights can be changed.')
             self.loose()
