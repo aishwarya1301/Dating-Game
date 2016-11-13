@@ -48,7 +48,7 @@ class Person(object):
         warn_print('Person (P) has %f seconds left' % (120 - self.time_taken))
         if self.time_taken > 120:
             error_print('Person (P) has exhausted his allotted time')
-            self.loose()
+            self.lose()
 
     def check_weight_and_candidates(self):
         ideal_mask = self.ideal_candidate.astype(np.bool)
@@ -56,14 +56,14 @@ class Person(object):
 
         if not np.isclose(ideal_sum, 1):
             error_print('Ideal sum is not 1, but %f' % ideal_sum)
-            self.loose()
+            self.lose()
 
         anti_ideal_mask = self.anti_ideal_candidate.astype(np.bool)
         anti_ideal_sum = np.sum(self.weights[anti_ideal_mask])
 
         if not np.isclose(anti_ideal_sum, -1):
             error_print('Anti-Ideal sum is not -1, but %f' % anti_ideal_sum)
-            self.loose()
+            self.lose()
 
     def recv_weights(self):
 
@@ -75,13 +75,13 @@ class Person(object):
 
         if not weight_string.endswith('\n'):
             error_print("Weights sent by P not truncated by '\\n'")
-            self.loose()
+            self.lose()
 
         weight_string = weight_string[:-1]
 
         if ',' not in weight_string:
             error_print('Weights not delimited by comma')
-            self.loose()
+            self.lose()
 
         weights = weight_string.split(',')
 
@@ -89,18 +89,18 @@ class Person(object):
             if len(weight) != 5:
                 error_print('Each weight should be exactly 5 characters')
                 error_print('Recevied a weight: %s' % weight)
-                self.loose()
+                self.lose()
 
         try:
             weights = map(float, weights)
         except ValueError as e:
             error_print(e.args[0])
-            self.loose()
+            self.lose()
 
         if len(weights) != self.num_attr:
             error_print('Expected %d weights but received %d' %
                         (self.num_attr, len(weights)))
-            self.loose()
+            self.lose()
 
         weights = np.array(weights)
         positive_mask = weights > 0
@@ -111,12 +111,12 @@ class Person(object):
         if not np.isclose(positive_sum, 1):
             error_print('Sum of +ve weights should be 1, but is %f' %
                         positive_sum)
-            self.loose()
+            self.lose()
 
         if not np.isclose(negative_sum, -1):
             error_print('Sum of -ve weights should be -1, but is %f' %
                         negative_sum)
-            self.loose()
+            self.lose()
 
         return np.array(weights)
 
@@ -129,13 +129,13 @@ class Person(object):
 
         if not cand_string.endswith('\n'):
             error_print("Weights sent by P not truncated by '\\n'")
-            self.loose()
+            self.lose()
 
         cand_string = cand_string[:-1]
 
         if ',' not in cand_string:
             error_print('Candidate attributes not delimited by comma')
-            self.loose()
+            self.lose()
 
         candidate = cand_string.split(',')
 
@@ -143,18 +143,18 @@ class Person(object):
             if attribute not in ['0', '1']:
                 error_print('Each attribute should be either 0 or 1')
                 error_print('Recevied an attribute: %s' % attribute)
-                self.loose()
+                self.lose()
 
         try:
             candidate = map(int, candidate)
         except ValueError as e:
             error_print(e.args[0])
-            self.loose()
+            self.lose()
 
         if len(candidate) != self.num_attr:
             error_print('Expected %d attributes but received %d' %
                         (self.num_attr, len(candidate)))
-            self.loose()
+            self.lose()
 
         return np.array(candidate)
 
@@ -173,17 +173,17 @@ class Person(object):
 
         if np.any(percent_change > 0.2):
             error_print('Perecentage change cannot be more than 20%')
-            self.loose()
+            self.lose()
 
         changed = ~np.isclose(delta_wegiths, 0)
         if np.count_nonzero(changed) > 0.05*self.num_attr:
             error_print('Only 5% of the weights can be changed.')
-            self.loose()
+            self.lose()
 
         self.weights = weights
         move_print('P updated weights to %r' % self.weights)
         self.report_time()
 
-    def loose(self):
-        error_print('P looses due to their mistake')
+    def lose(self):
+        error_print('P loses due to their mistake')
         exit(0)

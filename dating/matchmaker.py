@@ -67,7 +67,7 @@ class MatchMaker(object):
                    (120 - self.time_taken))
         if self.time_taken > 120:
             error_print('Matchmaker (M) has exhausted his allotted time')
-            self.loose()
+            self.lose()
 
     def recv_weights(self):
         info_print('Reading weights from M')
@@ -78,13 +78,13 @@ class MatchMaker(object):
 
         if not weight_string.endswith('\n'):
             error_print("Weights sent by M not truncated by '\\n'")
-            self.loose()
+            self.lose()
 
         weight_string = weight_string[:-1]
 
         if ',' not in weight_string:
             error_print('Weights not delimited by comma')
-            self.loose()
+            self.lose()
 
         weights = weight_string.split(',')
 
@@ -92,23 +92,23 @@ class MatchMaker(object):
             if len(weight) != 7:
                 error_print('Each weight should be exactly 7 characters')
                 error_print('Recevied a weight: %s' % weight)
-                self.loose()
+                self.lose()
 
         try:
             weights = map(float, weights)
         except ValueError as e:
             error_print(e.args[0])
-            self.loose()
+            self.lose()
 
         if len(weights) != self.num_attr:
             error_print('Expected %d weights but received %d' %
                         (self.num_attr, len(weights)))
-            self.loose()
+            self.lose()
 
         weights = np.array(weights)
         if not np.all((0 <= weights) & (weights <= 1)):
             error_print('Weights have to be between 0 and 1')
-            self.loose()
+            self.lose()
 
         weights = np.array(weights)
         return np.array(weights)
@@ -129,8 +129,8 @@ class MatchMaker(object):
         self.time_taken += t - start_time
         self.report_time()
 
-    def loose(self):
-        error_print('M looses due to their mistake')
+    def lose(self):
+        error_print('M loses due to their mistake')
         exit(0)
 
     def win(self):
