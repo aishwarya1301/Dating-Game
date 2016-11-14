@@ -28,12 +28,13 @@ for i in range(19):
         move_print('Matchmacker score = (%f, %d)' % (score, i + 1))
         matchmaker.win()
     else:
-        matchmaker.send_score_and_get_candidate(score)
-        person.send_guess_and_get_update(matchmaker.weight_guess)
         score = np.dot(matchmaker.weight_guess, person.weights)
         if score > best_score:
             best_score = score
             best_round = i + 1
+        matchmaker.send_score_and_get_candidate(score)
+        person.send_guess_and_get_update(matchmaker.weight_guess)
+
 
 matchmaker.send_score(score)
 move_print('Matchmacker score = (%f, %d)' % (best_score, best_round + 1))
