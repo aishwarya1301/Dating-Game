@@ -17,9 +17,9 @@ person = Person(ATTRIBUTES, connect_sock)
 
 # Matchmaker is given training data and one guess is taken.
 matchmaker = MatchMaker(ATTRIBUTES, person.weights, connect_sock)
-person.send_guess_and_get_update(matchmaker.weight_guess)
 score = np.dot(matchmaker.weight_guess, person.weights)
 best_score = max(best_score, score)
+person.send_guess_and_get_update(matchmaker.weight_guess)
 
 for i in range(19):
     if np.isclose(score, 1):
@@ -32,7 +32,5 @@ for i in range(19):
         score = np.dot(matchmaker.weight_guess, person.weights)
         best_score = max(best_score, score)
 
-
 matchmaker.send_score(score)
-
 move_print('Matchmacker score = %f' % best_score)
