@@ -95,3 +95,4 @@ Compress all your files into a single zip archive called `teamname.zip`. Make su
 bash teamname_player.sh <PORT-NO>
 bash teamname_matchmaker.sh <PORT-NO>
 ```
+Send all your submissions to `vnb222@nyu.edu`
