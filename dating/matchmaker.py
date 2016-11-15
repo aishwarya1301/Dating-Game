@@ -69,12 +69,25 @@ class MatchMaker(object):
             error_print('Matchmaker (M) has exhausted his allotted time')
             self.lose()
 
+    def socket_recv(self, length):
+        data = self.data_sock.recv(length)
+
+        if len(data) != length:
+            error_print('Weights received are ' + str(data) 
+                + ' length (' + str(len(data)) 
+                + '), but expected ' + str(length) )
+            return None
+
+        return data
+
     def recv_weights(self):
         info_print('Reading weights from M')
         # 7 chars for each weight, commas and one \n mark
-        weight_string = self.data_sock.recv(7*self.num_attr +
-                                            self.num_attr)
+        weight_string = self.socket_recv(7*self.num_attr + self.num_attr)
         info_print('Weights recieved are: %r' % weight_string)
+
+        if weight_string is None:
+            self.lose()
 
         if not weight_string.endswith('\n'):
             error_print("Weights sent by M not truncated by '\\n'")
