@@ -65,13 +65,28 @@ class Person(object):
             error_print('Anti-Ideal sum is not -1, but %f' % anti_ideal_sum)
             self.lose()
 
+    def socket_recv(self, length):
+        data = self.data_sock.recv(length)
+
+        if len(data) != length:
+            error_print('Weights received are ' + str(data) 
+                + ' length (' + str(len(data)) 
+                + '), but expected ' + str(length) )
+            return None
+
+        return data
+
+
     def recv_weights(self):
 
         info_print('Reading weights from P')
         # 5 chars for each weight, commas and one \n
-        weight_string = self.data_sock.recv(5*self.num_attr +
-                                            self.num_attr)
+        weight_string = self.socket_recv(5 * self.num_attr + self.num_attr)
+
         info_print('Weights recieved are: %r' % weight_string)
+
+        if weight_string is None:
+            self.lose()
 
         if not weight_string.endswith('\n'):
             error_print("Weights sent by P not truncated by '\\n'")
@@ -124,8 +139,11 @@ class Person(object):
 
         info_print('Reading candidate from P')
         # 1 char per attribute, commas and \n
-        cand_string = self.data_sock.recv(2*self.num_attr)
+        cand_string = self.socket_recv(2 * self.num_attr)
         info_print('Candidate received is: %r' % cand_string)
+
+        if cand_string is None:
+            self.lose()
 
         if not cand_string.endswith('\n'):
             error_print("Weights sent by P not truncated by '\\n'")
