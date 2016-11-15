@@ -172,9 +172,8 @@ class Person(object):
         percent_change = np.abs(delta_wegiths/self.initial_weights)
         # The result can contain only 2 significant digits.
         percent_change = (percent_change*100).astype(np.int)
-        percent_change = percent_change.astype(np.float)/100
 
-        if np.any(percent_change > 0.2):
+        if np.any(percent_change > 20):
             error_print('Perecentage change cannot be more than 20%')
             self.lose()
 
