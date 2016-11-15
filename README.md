@@ -86,3 +86,12 @@ original weights from step 2 and only 5% of them changed. Once again, the weight
   ```
   +0.1356\n
   ```
+
+# Submission Format
+
+Compress all your files into a single zip archive called `teamname.zip`. Make sure it has 2 bash files `teamname_player.sh` and
+`teamname_matchmaker.sh`. Please load all your modules you need in your bash files. The bash files will be called as follows
+```shell
+bash teamname_player.sh <PORT-NO>
+bash teamname_matchmaker.sh <PORT-NO>
+```
