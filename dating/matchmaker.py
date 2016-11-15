@@ -73,9 +73,9 @@ class MatchMaker(object):
         data = self.data_sock.recv(length)
 
         if len(data) != length:
-            error_print('Weights received are ' + str(data) 
-                + ' length (' + str(len(data)) 
-                + '), but expected ' + str(length) )
+            error_print('Weights received are ' + str(data)
+                        + ' length (' + str(len(data))
+                        + '), but expected ' + str(length))
             return None
 
         return data

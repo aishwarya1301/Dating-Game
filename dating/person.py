@@ -5,6 +5,12 @@ import numpy as np
 from .utils import floats_to_msg4
 
 
+def float_formatter(x):
+    return "%.4f" % x
+
+np.set_printoptions(formatter={'float_kind': float_formatter})
+
+
 class Person(object):
     def __init__(self, num_attr, connect_sock):
         """ Initilize Person (P).
@@ -30,6 +36,7 @@ class Person(object):
         start_time = time.time()
 
         self.initial_weights = self.recv_weights()
+        self.initial_weights = self.handle_zeros(self.initial_weights)
         self.weights = self.initial_weights
         move_print('Inital Weights by P: %r' % self.initial_weights)
 
@@ -69,13 +76,12 @@ class Person(object):
         data = self.data_sock.recv(length)
 
         if len(data) != length:
-            error_print('Weights received are ' + str(data) 
-                + ' length (' + str(len(data)) 
-                + '), but expected ' + str(length) )
+            error_print('Weights received are ' + str(data)
+                        + ' length (' + str(len(data))
+                        + '), but expected ' + str(length))
             return None
 
         return data
-
 
     def recv_weights(self):
 
@@ -186,6 +192,7 @@ class Person(object):
         t = time.time()
         self.time_taken += t - start_time
 
+        weights = self.handle_zeros(weights)
         delta_wegiths = weights - self.initial_weights
         percent_change = np.abs(delta_wegiths/self.initial_weights)
         # The result can contain only 2 significant digits.
@@ -207,3 +214,9 @@ class Person(object):
     def lose(self):
         error_print('P loses due to their mistake')
         exit(0)
+
+    def handle_zeros(self, arr):
+        "replace 0s with a small number"
+        zero_weights_idx = np.isclose(arr, 0)
+        arr[zero_weights_idx] = 1e-8
+        return arr
