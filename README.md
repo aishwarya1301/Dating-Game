@@ -1,12 +1,12 @@
 # Dating Game architecture
-[Dating game](http://cs.nyu.edu/courses/fall16/CSCI-GA.2965-001/dating.html) architecture for the Heuristic Problem Solving course at NYU (Fall 2016)
+[Dating game](https://cs.nyu.edu/courses/fall20/CSCI-GA.2965-001/) architecture for the Heuristic Problem Solving course at NYU (Fall 2020)
 
 # Running
 The `architect.py` file is the main entry point for starting the game. Execute the following in a shell to start it.
 ```shell
 python architect.py <PORT-NO>
 ```
-Change the variable `ATTRIBUTES` to inside `architect.py` file to change the number of attributes each candidate can have.
+Change the variable `ATTRIBUTES` which is defined inside `architect.py` file to change the number of attributes each candidate can have.
 The test scripts can be executed by
 ```shell
 python test_person.py <PORT-NO>
@@ -15,12 +15,12 @@ python test_matchmaker.py <PORT-NO>
 
 # Sequence of actions
 1. The architect communicates the number of attributs (`n`) to Person (P) via socket.
-2. P responds with a vector `w`, of length `n` whose positive components sum to `1` and negative components sum to `-1` and 
+2. P responds with a vector `w`, of length `n` whose positive components sum to `1` and negative components sum to `-1` and
 sends it to the architect who verifies it. P also sends 2 binary arrays indicating the ideal and anti-ideal candidate which
 are also verified.
 3. The architect communicates `n` via socket to Matchmacker (M).
 4. The architect computes the dot product of the `s_i = (w.x_i)` for `1 <= i <= 20` where `x_i` is a binary random
-vector. He sends all 20 `s_i` and `x_i` to M.
+vector. Architect then sends all 20 `s_i` and `x_i` to M.
 5. For 20 turns
   1. M guesses some `x`, such that all components of `x` are between `0` and `1`.
   2. Architect computes `s = w.x`, and stores `s`. It then sends `x` to P.
@@ -43,7 +43,7 @@ and `\n` to denote end of a message.
   ```
 
 2. The architect then expects a response containing exactly, `6n` characters, denoting the initial set of weights. Each
-component of the weight vector should contain, a +/- sign, followed by one digit before the decimal and 2 digits after 
+component of the weight vector should contain, a +/- sign, followed by one digit before the decimal and 2 digits after
 the decimal. If you are not using any digits, you should set them to `0`. Components are separated by `,` and `\n` denotes
 the end of the message. For example, for `n=5`.
 
@@ -51,8 +51,8 @@ the end of the message. For example, for `n=5`.
   +0.20,+0.80,-0.68,-0.00,-0.32\n
   ```
 You can use the `dating/utils.py:floats_to_msg2` function to do so.
-3. The atchitech then expects the ideal and anti-ideal candidates, with the ideal candidate expected first. Each candidate
-is exactly `2n` characters of binary digits. For example
+3. The architect then expects the ideal and anti-ideal candidates, with the ideal candidate expected first. Each candidate
+is exactly `2n` characters of 0 or 1. For example
 
   ```
   0,1,1,0,0\n
@@ -95,4 +95,5 @@ Compress all your files into a single zip archive called `teamname.zip`. Make su
 bash teamname_player.sh <PORT-NO>
 bash teamname_matchmaker.sh <PORT-NO>
 ```
-Send all your submissions to `vnb222@nyu.edu`
+Send all your submissions to `arajan@nyu.edu`
+You can also send in any queries to `pg1899@nyu.edu`

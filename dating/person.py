@@ -86,39 +86,39 @@ class Person(object):
     def recv_weights(self):
 
         info_print('Reading weights from P')
-        # 5 chars for each weight, commas and one \n
-        weight_string = self.socket_recv(5 * self.num_attr + self.num_attr)
+        # 6 chars for each weight: [+|-][0|1][.][0..9][0..9][,|\n]
+        weight_string = self.socket_recv(6 * self.num_attr)
 
         info_print('Weights recieved are: %r' % weight_string)
 
-        if weight_string is None:
+        if weight_string is None: #Empty weights
             self.lose()
 
-        if not weight_string.endswith('\n'):
+        if not weight_string.endswith('\n'): #Weights ntot terminated with \n
             error_print("Weights sent by P not truncated by '\\n'")
             self.lose()
 
         weight_string = weight_string[:-1]
 
-        if ',' not in weight_string:
+        if ',' not in weight_string: #Weights not delimited by comma
             error_print('Weights not delimited by comma')
             self.lose()
 
         weights = weight_string.split(',')
 
-        for weight in weights:
+        for weight in weights: #Each weight is a decimal with precion =2 and is signed
             if len(weight) != 5:
                 error_print('Each weight should be exactly 5 characters')
                 error_print('Recevied a weight: %s' % weight)
                 self.lose()
 
-        try:
+        try: #Convert string weight to float weight
             weights = map(float, weights)
         except ValueError as e:
             error_print(e.args[0])
             self.lose()
 
-        if len(weights) != self.num_attr:
+        if len(weights) != self.num_attr: # num of Weights should be same as num of attributes 
             error_print('Expected %d weights but received %d' %
                         (self.num_attr, len(weights)))
             self.lose()
@@ -126,6 +126,7 @@ class Person(object):
         weights = np.array(weights)
         positive_mask = weights > 0
 
+        #All pos weights and neg weights should sum to 1 separately
         positive_sum = np.sum(weights[positive_mask])
         negative_sum = np.sum(weights[~positive_mask])
 
