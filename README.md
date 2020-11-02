@@ -4,13 +4,13 @@
 # Running
 The `architect.py` file is the main entry point for starting the game. Execute the following in a shell to start it.
 ```shell
-python architect.py <PORT-NO>
+python2 architect.py <PORT-NO>
 ```
 Change the variable `ATTRIBUTES` which is defined inside `architect.py` file to change the number of attributes each candidate can have.
 The test scripts can be executed by
 ```shell
-python test_person.py <PORT-NO>
-python test_matchmaker.py <PORT-NO>
+python2 test_person.py <PORT-NO>
+python2 test_matchmaker.py <PORT-NO>
 ```
 
 # Sequence of actions
