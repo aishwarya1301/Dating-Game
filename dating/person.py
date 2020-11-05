@@ -30,7 +30,9 @@ class Person(object):
         self.data_sock, _ = self.connect_sock.accept()
 
         info_print('Sent number of attributes to P')
-        self.data_sock.sendall('%03d\n' % num_attr)
+        msg_num_attr = '%03d\n' % num_attr
+        msg_num_attr = msg_num_attr.encode('utf-8')
+        self.data_sock.sendall(msg_num_attr)
 
         # Sent the msg to Person, start clocking them.
         start_time = time.time()
@@ -73,7 +75,7 @@ class Person(object):
             self.lose()
 
     def socket_recv(self, length):
-        data = self.data_sock.recv(length)
+        data = self.data_sock.recv(length).decode('utf-8')
 
         if len(data) != length:
             error_print('Weights received are ' + str(data)
@@ -113,12 +115,12 @@ class Person(object):
                 self.lose()
 
         try: #Convert string weight to float weight
-            weights = map(float, weights)
+            weights = list(map(float, weights))
         except ValueError as e:
             error_print(e.args[0])
             self.lose()
 
-        if len(weights) != self.num_attr: # num of Weights should be same as num of attributes 
+        if len(weights) != self.num_attr:
             error_print('Expected %d weights but received %d' %
                         (self.num_attr, len(weights)))
             self.lose()
@@ -171,7 +173,7 @@ class Person(object):
                 self.lose()
 
         try:
-            candidate = map(int, candidate)
+            candidate = list(map(int, candidate))
         except ValueError as e:
             error_print(e.args[0])
             self.lose()

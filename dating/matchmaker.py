@@ -40,7 +40,9 @@ class MatchMaker(object):
         self.data_sock, _ = self.connect_sock.accept()
 
         info_print('Sent number of attributes to M')
-        self.data_sock.sendall('%03d\n' % num_attr)
+        msg_num_attr = '%03d\n' % num_attr
+        msg_num_attr = msg_num_attr.encode('utf-8')
+        self.data_sock.sendall(msg_num_attr)
 
         # Msg sent to M, start clocking them
         start_time = time.time()
@@ -83,7 +85,7 @@ class MatchMaker(object):
     def recv_weights(self):
         info_print('Reading weights from M')
         # 7 chars for each weight, commas and one \n mark
-        weight_string = self.socket_recv(7*self.num_attr + self.num_attr)
+        weight_string = self.socket_recv(7*self.num_attr + self.num_attr).decode("utf-8")
         info_print('Weights recieved are: %r' % weight_string)
 
         if weight_string is None:
@@ -108,12 +110,12 @@ class MatchMaker(object):
                 self.lose()
 
         try:
-            weights = map(float, weights)
+            weights = list(map(float, weights))
         except ValueError as e:
             error_print(e.args[0])
             self.lose()
 
-        if len(weights) != self.num_attr:
+        if len(list(weights)) != self.num_attr:
             error_print('Expected %d weights but received %d' %
                         (self.num_attr, len(weights)))
             self.lose()
@@ -128,10 +130,12 @@ class MatchMaker(object):
 
     def send_score(self, score):
         msg = '%+1.4f\n' % score
+        msg = msg.encode("utf-8")
         self.data_sock.sendall(msg)
 
     def send_score_and_get_candidate(self, score):
         msg = '%+1.4f\n' % score
+        msg = msg.encode('utf-8')
         self.data_sock.sendall(msg)
         move_print('Mathmacker got score %f' % score)
         start_time = time.time()

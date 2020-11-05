@@ -18,7 +18,7 @@ def get_valid_prob(n):
 
 
 def get_valid_weights(n):
-    half = n/2
+    half = n//2
 
     a = np.zeros(n)
     a[:half] = get_valid_prob(half)
@@ -29,7 +29,7 @@ def get_valid_weights(n):
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect(('localhost', PORT))
 
-num_string = sock.recv(4)
+num_string = sock.recv(4).decode("utf-8")
 assert num_string.endswith('\n')
 
 num_attr = int(num_string[:-1])
@@ -44,7 +44,7 @@ sock.sendall(candidate_to_msg(anti_ideal_candidate))
 
 for i in range(20):
     # 7 char weights + commas + exclamation
-    data = sock.recv(8*num_attr)
+    data = sock.recv(8*num_attr).decode("utf-8")
     print('%d: Received guess = %r' % (i, data))
     assert data[-1] == '\n'
     sock.send(floats_to_msg2(initial_weights))
