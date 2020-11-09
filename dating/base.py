@@ -23,6 +23,9 @@ def info_print(msg):
 def move_print(msg):
     print(bcolors.OKGREEN + msg + bcolors.ENDC)
 
+def score_print(msg):
+    print(bcolors.FAIL + msg + bcolors.ENDC)
+
 
 def warn_print(msg):
     print(bcolors.WARNING + msg + bcolors.ENDC)

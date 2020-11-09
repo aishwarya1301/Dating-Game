@@ -31,6 +31,8 @@ class MatchMaker(object):
         self.num_attr = num_attr
         self.time_taken = 0
 
+        self.guess_num = 0
+
         self.true_weights = true_weights
 
         self.connect_sock = connect_sock
@@ -50,8 +52,8 @@ class MatchMaker(object):
         info_print('Sending initial sample to M')
         self.send_initial_sample_set()
         self.weight_guess = self.recv_weights()
-
-        move_print('Received weight guess %r' % self.weight_guess)
+        
+        move_print('Received %d weight guess %r' % (self.guess_num, self.weight_guess))
         t = time.time()
         self.time_taken += t - start_time
         self.report_time()
@@ -83,6 +85,7 @@ class MatchMaker(object):
         return data
 
     def recv_weights(self):
+        self.guess_num+=1
         info_print('Reading weights from M')
         # 7 chars for each weight, commas and one \n mark
         weight_string = self.socket_recv(7*self.num_attr + self.num_attr).decode("utf-8")
@@ -141,7 +144,7 @@ class MatchMaker(object):
         start_time = time.time()
 
         self.weight_guess = self.recv_weights()
-        move_print('Received weight guess %r' % self.weight_guess)
+        move_print('Received %d weight guess %r' % (self.guess_num,self.weight_guess))
         t = time.time()
         self.time_taken += t - start_time
         self.report_time()

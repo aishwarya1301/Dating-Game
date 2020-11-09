@@ -185,6 +185,10 @@ class Person(object):
 
         return np.array(candidate)
 
+    def send_guess(self, weight_guess):
+        info_print('Sending Ms guess to P')
+        self.data_sock.send(floats_to_msg4(weight_guess))
+        
     def send_guess_and_get_update(self, weight_guess):
         info_print('Sending Ms guess to P')
         self.data_sock.send(floats_to_msg4(weight_guess))
